@@ -4,7 +4,8 @@
 
 > Nagios/Icinga Plugin for checking OS Release Schedule
 
-Currently only Debian, Raspbian and Ubuntu are supported, Pull Requests welcome!
+Monitors `/etc/os-release` and warns you before the support for your distribution ends and you should consider upgrading
+soon. Currently only Debian, Raspbian and Ubuntu are supported, Pull Requests welcome!
 
 
 ### Install
@@ -36,7 +37,7 @@ define service {
         use                     generic-service
         host_name               servername
         service_description     OS Release
-        check_command           check_os_release!6!2
+        check_command           check_os_release!2!1
 }
 
 ```
