@@ -1,0 +1,120 @@
+#!/bin/bash
+
+VERSION="18.01.1"
+
+# check_os_release
+# https://github.com/hobbyquaker/check_os_release
+#
+# Simple Nagios/Icinga check for support end of Linux distributions.
+#
+# Currently only Debian, Raspbian and Ubuntu are supported, Pull Requests welcome!
+# MIT Licensed, Copyright 2018 https://github.com/hobbyquaker
+
+declare -A ubuntu_eol=(
+    ["14.04"]="2019-04-01"
+    ["14.10"]="2015-07-23"
+    ["15.04"]="2016-02-04"
+    ["15.10"]="2016-07-28"
+    ["16.04"]="2021-04-01"
+    ["16.10"]="2017-07-20"
+    ["17.04"]="2018-01-13"
+    ["17.10"]="2018-10-19"
+    ["18.04"]="2023-04-01"
+
+    # TBD
+    ["18.10"]="2018-10-01"
+    ["19.04"]="2020-04-01"
+    ["19.10"]="2020-10-01"
+    ["20.04"]="2025-04-01"
+)
+
+declare -A debian_lts=(
+    ["6"]="2016-02-29"
+    ["7"]="2018-05-31"
+    ["8"]="2020-04-30"
+    ["9"]="2022-06-30"
+
+    # TBD
+    ["10"]="2024-04-01"
+    ["11"]="2026-04-01"
+)
+
+declare -A debian_eol=(
+    ["6"]="2016-02-29"
+    ["7"]="2016-04-26"
+    ["8"]="2018-05-31"
+    ["9"]="2020-05-30"
+
+    #TBD
+    ["10"]="2022-04-01"
+    ["11"]="2024-04-01"
+)
+
+WARN_MONTHS=3
+CRIT_MONTHS=1
+DEB_LTS=0
+
+while getopts 'w:c:lhv' OPT; do
+  case $OPT in
+    w)  WARN_MONTHS=$OPTARG;;
+    c)  CRIT_MONTHS=$OPTARG;;
+    h)
+        echo "usage: $0 [ -w value ] [ -c value ] [ -l ]
+    -w Warn if supports ends in less then given months      [default: 3]
+    -c Critical if supports ends in less then given months  [default: 1]
+    -l Use Debian LTS                                       [default: false]
+    -h print this help screen
+    -v show version
+"
+        exit 0
+        ;;
+    l)  DEB_LTS=1;;
+    v)
+        echo "$0 $VERSION"
+        exit 0
+        ;;
+  esac
+done
+
+WARNING=$(date --date="+$WARN_MONTHS month" +"%Y-%m-%d")
+CRITICAL=$(date --date="+$CRIT_MONTHS month" +"%Y-%m-%d")
+TODAY=$(date +"%Y-%m-%d")
+
+source /etc/os-release
+
+case "$ID" in
+    "ubuntu")
+        EOL=${ubuntu_eol[$VERSION_ID]}
+        ;;
+    "debian") ;&
+    "raspbian")
+        if [ $DEB_LTS -eq 0 ]
+        then
+            EOL=${debian_eol[$VERSION_ID]}
+        else
+            EOL=${debian_lts[$VERSION_ID]}
+        fi
+        ;;
+    *)
+        # TODO other Distributions...
+        echo "UNKNOWN: unknown distribution ID=$ID (ID_LIKE=$ID_LIKE)"
+        exit 3
+        ;;
+esac
+
+if [ $EOL \< $TODAY ]
+then
+    echo "CRITICAL: Support for $ID $VERSION_ID ended at $EOL"
+    exit 2
+elif [ $EOL \< $CRITICAL ]
+then
+    echo "CRITICAL: Support for $ID $VERSION_ID ends at $EOL"
+    exit 2
+elif [ $EOL \< $WARNING ]
+then
+    echo "WARNING: Support for $ID $VERSION_ID ends at $EOL"
+    exit 1
+else
+    echo "OK: Support for $ID $VERSION_ID ends at $EOL"
+    exit 0
+fi
