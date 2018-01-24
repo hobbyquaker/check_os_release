@@ -7,6 +7,9 @@
 Monitors `/etc/os-release` and warns you before the support for your distribution ends and you should consider upgrading
 soon. Currently only Debian, Raspbian and Ubuntu are supported, Pull Requests welcome!
 
+Release schedules are hardcoded until now, if someone can give me if they are available in machine readable form I will
+change that. Didn't want to parse the wiki pages, I don't like parsers that break sooner or later ;-)
+
 
 ### Install
 
