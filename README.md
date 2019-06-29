@@ -1,4 +1,4 @@
-# check_os_release
+# check_os_release 2.0
 
 [![License][mit-badge]][mit-url]
 
@@ -6,10 +6,6 @@
 
 Monitors `/etc/os-release` and warns you before the support for your distribution ends and you should consider upgrading
 soon. Currently only Debian, Raspbian and Ubuntu are supported, Pull Requests welcome!
-
-Release schedules are hardcoded until now, if someone can give me a hint if they are available in machine readable form 
-I will change that. Didn't want to parse the wiki pages, I don't like parsers that break sooner or later ;-)
-
 
 ### Install
 
@@ -47,7 +43,7 @@ define service {
 
 ## License
 
-MIT (c) 2018 [Sebastian Raff](https://github.com/hobbyquaker)
+MIT (c) 2018, 2019 [Sebastian Raff](https://github.com/hobbyquaker)
 
 [mit-badge]: https://img.shields.io/badge/License-MIT-blue.svg?style=flat
 [mit-url]: LICENSE
