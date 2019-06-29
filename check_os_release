@@ -8,7 +8,7 @@
 # Currently only Debian, Raspbian and Ubuntu are supported, Pull Requests welcome!
 # MIT Licensed, Copyright 2018, 2019 https://github.com/hobbyquaker
 
-VERSION="2.0"
+VERSION="2.0.1"
 
 RELEASE_FILE="/etc/os-release"
 DEBIAN_URL="https://salsa.debian.org/debian/distro-info-data/raw/master/debian.csv"
@@ -110,7 +110,10 @@ else
 fi
 
 
-if [ -z "$EOL" ] && [ "$ID_LIKE" = "debian" ]; then
+if [ -z "$EOL" ] && [ "$ID" = "debian" ]; then
+    EOL=$(date --date="$RELEASE+3 years" +"%Y-%m-%d")
+    ESTIMATE=" (estimated)"
+elif [ -z "$EOL" ] && [ "$ID_LIKE" = "debian" ]; then
     EOL=$(date --date="$RELEASE+3 years" +"%Y-%m-%d")
     ESTIMATE=" (estimated)"
 elif [ -z "$EOL" ]; then

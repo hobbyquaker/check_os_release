@@ -1,4 +1,4 @@
-# check_os_release 2.0
+# check_os_release 2.0.1
 
 [![License][mit-badge]][mit-url]
 
