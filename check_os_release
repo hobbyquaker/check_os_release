@@ -8,11 +8,11 @@
 # Currently only Debian, Raspbian and Ubuntu are supported, Pull Requests welcome!
 # MIT Licensed, Copyright 2018, 2019 https://github.com/hobbyquaker
 
-VERSION="2.0.3"
+VERSION="2.0.4"
 
 RELEASE_FILE="/etc/os-release"
-DEBIAN_URL="https://salsa.debian.org/debian/distro-info-data/-/raw/HEAD/debian.csv"
-UBUNTU_URL="https://salsa.debian.org/debian/distro-info-data/-/raw/HEAD/ubuntu.csv"
+DEBIAN_URL="https://debian.pages.debian.net/distro-info-data/debian.csv"
+UBUNTU_URL="https://debian.pages.debian.net/distro-info-data/ubuntu.csv"
 SCHEDULE_FILE="/tmp/os_release_schedule.csv"
 SCHEDULE_FILE_MAXAGE=30
 
