@@ -8,7 +8,7 @@
 # Currently only Debian, Raspbian and Ubuntu are supported, Pull Requests welcome!
 # MIT Licensed, Copyright 2018, 2019 https://github.com/hobbyquaker
 
-VERSION="2.0.4"
+VERSION="2.0.5"
 
 RELEASE_FILE="/etc/os-release"
 DEBIAN_URL="https://debian.pages.debian.net/distro-info-data/debian.csv"
@@ -73,6 +73,9 @@ case "$ID" in
         ;;
 esac
 
+if [ ! -s $SCHEDULE_FILE ] ; then
+    rm -f $SCHEDULE_FILE
+fi
 
 if [ ! -f $SCHEDULE_FILE ]; then
     wget -q $URL -O $SCHEDULE_FILE.tmp
