@@ -8,7 +8,7 @@
 # Currently only Debian, Raspbian and Ubuntu are supported, Pull Requests welcome!
 # MIT Licensed, Copyright 2018, 2019 https://github.com/hobbyquaker
 
-VERSION="2.0.6"
+VERSION="2.0.7"
 
 RELEASE_FILE="/etc/os-release"
 DEBIAN_URL="https://debian.pages.debian.net/distro-info-data/debian.csv"
@@ -84,9 +84,10 @@ if [ ! -f $SCHEDULE_FILE ]; then
         exit 3
     else
         mv $SCHEDULE_FILE.tmp $SCHEDULE_FILE
+        touch $SCHEDULE_FILE
     fi
 elif [[ $(find "$SCHEDULE_FILE" -mtime +$SCHEDULE_FILE_MAXAGE -print) ]]; then
-    wget -q $URL -O $SCHEDULE_FILE.tmp && mv $SCHEDULE_FILE.tmp $SCHEDULE_FILE
+    wget -q $URL -O $SCHEDULE_FILE.tmp && mv $SCHEDULE_FILE.tmp $SCHEDULE_FILE && touch $SCHEDULE_FILE
 fi
 
 
